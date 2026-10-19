@@ -1,5 +1,9 @@
 const divalunos = document.getElementById("alunos");
 
+const botaoCriarAluno = document.getElementById("criarAluno");
+
+botaoCriarAluno.addEventListener("click", criaAluno);
+
 console.log("div dos alunos : "  +  divalunos);
 console.log(divalunos);
 
@@ -32,5 +36,31 @@ async function apagarAluno(evento) {
     console.log(response);
     obterAlunos();
     return;
+}
+
+async function criaAluno(evento) {
+    const nomeAluno = document.getElementById("nomeAluno").value;
+    const cursoAluno = document.getElementById("cursoAluno").value;
+    const idadeAluno = document.getElementById("idadeAluno").value;
+    console.log(nomeAluno, cursoAluno, idadeAluno);
+
+    const novoaluno = {
+        nome: nomeAluno,
+        cursoId: cursoAluno,
+        idade: idadeAluno
+    }
+
+    const jsonAluno = JSON.stringify(novoaluno);
+    console.log(jsonAluno)
+
+    const response = await fetch("http://localhost:3000/alunos", {
+        "method" : "POST",
+        "body" : jsonAluno,
+        "headers" : {
+            "Content-Type" : "application/json"
+        }
+    });
+    obterAlunos();
+
 }
 obterAlunos();
