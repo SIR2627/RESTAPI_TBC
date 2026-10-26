@@ -7,6 +7,16 @@ dotenv.config();
 const app = express()
 const port = 3000
 
+const alunoSchema = new mongoose.Schema({
+  nome: String,
+  apelido: String,
+  curso : String,
+  idade : Number
+});
+
+const Aluno = mongoose.model('Aluno', alunoSchema);
+
+
 async function connect() {
   await mongoose.connect(process.env.MONGO_URI);
   console.log('Conectado ao MongoDB');
@@ -15,8 +25,10 @@ async function connect() {
 connect().catch(err => console.log(err));
 
 
-app.get('/alunos', (req, res) => {
-  res.send('Olá Alunos!')
+app.get('/alunos', async (req, res) => {
+  todosalunos = await Aluno.find({});
+  console.log(todosalunos);
+  res.json(todosalunos);
 })
 
 app.get('/alunos/:id', (req, res) => {
